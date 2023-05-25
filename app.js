@@ -1,4 +1,79 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const  mongoose = require("mongoose");
+
+main().catch(err => console.log(err));
+
+async function main() {
+  // await mongoose.connect("mongodb+srv://parnella:Rojo5677@cluster0.wewbbzc.mongodb.net/?retryWrites=true&w=majority",{useNewUrlParser: true});
+  // await mongoose.connect("mongodb://localhost:27017/fruitsDB");
+  await mongoose.connect("mongodb://127.0.0.1:27017/fruitsDB");
+  
+  const fruitSchema = new mongoose.Schema({
+    name: String,
+    rating: Number,
+    review: String
+  });
+  
+  const Fruit = mongoose.model("Fruit",fruitSchema);
+
+  const fruit = new Fruit({
+    name: "Pear",
+    rating: 3,
+    review: "delicious under ideal conditions, but if not ripe enough or overripte, can get real ugly."
+  });
+  
+  const kiwi = new Fruit({
+    name: "Kiwi",
+    rating: 10,
+    review: "The best fruit!"
+  });
+  
+  const orange = new Fruit({
+    name: "Orange",
+    rating: 7,
+    review: "Hit or miss, the good ones are good."
+  });
+  
+  const banana = new Fruit({
+    name: "Banana",
+    rating: 7,
+    review: "Great for smoothies."
+  });
+  
+  // fruit.save();
+  Fruit.insertMany([kiwi,orange,banana]).then(function() {
+    console.log("success!");
+  }).catch(function(err) {
+    console.log(err);
+  });
+  
+  //challenge
+  
+  const personSchema = new mongoose.Schema({
+    name: String,
+    age: Number    
+  });
+  
+  const Person = new mongoose.model("Person",personSchema);
+  
+  const newKid = new Person({
+    name: "Me",
+    age: 32
+  });
+  
+  // newKid.save();
+}
+
+
+
+
+
+
+
+
+
+
+
+/* const { MongoClient, ServerApiVersion } = require('mongodb');
 const uri = "mongodb+srv://parnella:Rojo5677@cluster0.wewbbzc.mongodb.net/?retryWrites=true&w=majority";
  
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -14,7 +89,6 @@ const client = new MongoClient(uri, {
 const db = "fruitsDB";
 const coll = "fruits";
  
-/* main function that runs commands */
 async function main() {
   try {
     // connect
@@ -69,31 +143,4 @@ async function findAllFruits(client){
   console.log("Found the following fruits");
   console.log(results);
 }
-
-
-
-/*
-const MongoClient = require("mongodb");
-
-// Replace the uri string with your connection string.
-const uri = "mongodb://localhost:27017";
-
-const client = new MongoClient(uri);
-
-async function run() {
-  try {
-    const database = client.db('sample_mflix');
-    const movies = database.collection('movies');
-
-    // Query for a movie that has the title 'Back to the Future'
-    const query = { title: 'Back to the Future' };
-    const movie = await movies.findOne(query);
-
-    console.log(movie);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-}
-run().catch(console.dir);
-*/
+ */
